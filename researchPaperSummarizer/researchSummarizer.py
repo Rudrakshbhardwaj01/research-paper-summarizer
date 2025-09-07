@@ -2,14 +2,18 @@ from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from dotenv import load_dotenv
 import streamlit as st
 from langchain_core.prompts import load_prompt
+from pathlib import Path
+import os
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from .env or Streamlit secrets
+load_dotenv()  # Loads .env locally
+HF_TOKEN = os.getenv("HF_TOKEN")  # Hugging Face token
 
 # Configure HuggingFace LLM
 llm = HuggingFaceEndpoint(
     repo_id="mistralai/Mistral-7B-Instruct-v0.2",
-    task="text-generation"
+    task="text-generation",
+    huggingfacehub_api_token=HF_TOKEN  # use token from .env or secrets
 )
 model = ChatHuggingFace(llm=llm)
 
@@ -111,3 +115,4 @@ if st.button("Summarize"):
     
     st.subheader("Summary:")
     st.write(result.content)
+
