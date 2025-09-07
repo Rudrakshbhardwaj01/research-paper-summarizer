@@ -20,7 +20,7 @@ A Streamlit app to generate concise summaries of research papers, with selectabl
 
 ## Visit the Live Site
 
-You can try the app online here: [Research Paper Summarizer Live](https://researchsummarizerpy-ge5p5y68dcvo2i5u5klpin.streamlit.app/)
+You can try the app online here: [Research Paper Summarizer Live](https://researchsummarizerpy-dpyjg3g76kfprdbp6ccuwb.streamlit.app/)
 
 ---
 
