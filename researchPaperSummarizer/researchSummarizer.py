@@ -5,8 +5,12 @@ from langchain_core.prompts import load_prompt
 from pathlib import Path
 import os
 
-load_dotenv()  # loads local .env
-HF_TOKEN = os.getenv("HF_TOKEN")  # Hugging Face API token
+# Use .env for local dev, Streamlit secrets for deployment
+if "HF_TOKEN" not in os.environ:
+    HF_TOKEN = st.secrets["huggingface"]["HF_TOKEN"]
+else:
+    HF_TOKEN = os.environ["HF_TOKEN"]
+
 
 # ---------------------------
 # Configure HuggingFace LLM
@@ -117,3 +121,4 @@ if st.button("Summarize"):
     
     st.subheader("Summary:")
     st.write(result.content)
+
