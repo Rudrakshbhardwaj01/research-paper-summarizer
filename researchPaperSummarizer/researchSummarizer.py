@@ -5,22 +5,24 @@ from langchain_core.prompts import load_prompt
 from pathlib import Path
 import os
 
-# Load environment variables from .env or Streamlit secrets
-load_dotenv()  # Loads .env locally
-HF_TOKEN = os.getenv("HF_TOKEN")  # Hugging Face token
+load_dotenv()  # loads local .env
+HF_TOKEN = os.getenv("HF_TOKEN")  # Hugging Face API token
 
+# ---------------------------
 # Configure HuggingFace LLM
+# ---------------------------
 llm = HuggingFaceEndpoint(
     repo_id="mistralai/Mistral-7B-Instruct-v0.2",
     task="text-generation",
-    huggingfacehub_api_token=HF_TOKEN  # use token from .env or secrets
+    huggingfacehub_api_token=HF_TOKEN
 )
 model = ChatHuggingFace(llm=llm)
 
-# Page title
 st.title("Research Paper Summarizer")
 
-# Select Research Paper
+# ---------------------------
+# Paper Selection
+# ---------------------------
 paper_input = st.selectbox("Select Research Paper", [
     "Attention Is All You Need",
     "BERT: Pre-training of Deep Bidirectional Transformers",
@@ -85,7 +87,7 @@ paper_input = st.selectbox("Select Research Paper", [
     "Whisper: Robust Speech Recognition via Large-Scale Weak Supervision"
 ])
 
-# Select Explanation Style
+
 style_input = st.selectbox("Explanation Style", [
     "Beginner-Friendly",
     "Code-Heavy",
@@ -93,17 +95,17 @@ style_input = st.selectbox("Explanation Style", [
     "Advanced"
 ])
 
-# Select Explanation Length
 length_input = st.selectbox("Explanation Length", [
     "Short (1-2 paragraphs)",
     "Medium (3-5 paragraphs)",
     "Long (detailed explanation)"
 ])
 
-# Load prompt template
-template = load_prompt('template.json')
 
-# Summarize button
+BASE_DIR = Path(__file__).parent
+template_path = BASE_DIR / "template.json"
+template = load_prompt(template_path)
+
 if st.button("Summarize"):
     with st.spinner("Generating summary..."):
         chain = template | model
@@ -115,4 +117,3 @@ if st.button("Summarize"):
     
     st.subheader("Summary:")
     st.write(result.content)
-
